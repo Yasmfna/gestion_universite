@@ -30,6 +30,7 @@ class CustomLoginController extends Controller
                 'dirc1'   => 'dirc1.dashboard',
                 'dirc2'   => 'dirc2.dashboard',
                 'respo1'  => 'respo1.dashboard',
+                'user'  => 'user.dashboard',
             ];
 
             if (array_key_exists($role, $redirectRoutes)) {

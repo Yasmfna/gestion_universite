@@ -9,6 +9,9 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <!-- Font Awesome -->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="{{ asset('assets1/css/aos.css')}}">
+  <link rel="stylesheet" href="{{ asset('assets1/css/aos.css')}}">
+
   <!-- CSS personnalisé -->
   <link href="{{asset('styles.css')}}" rel="stylesheet">
 </head>
@@ -28,6 +31,7 @@
         <ul class="navbar-nav ms-auto">
           <li class="nav-item"><a class="nav-link active" href="#">Accueil</a></li>
           <li class="nav-item"><a class="nav-link" href="#apropos">À propos</a></li>
+          <li class="nav-item"><a class="nav-link" href="#apropos">demande </a></li>
           <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
           <li class="nav-item"><a class="nav-link" href="{{route('login.connecter')}}"><i class="fas fa-sign-in-alt me-1"></i>Se connecter</a></li>
         </ul>

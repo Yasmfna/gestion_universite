@@ -28,6 +28,8 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::get('/admin/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
     
+    Route::get('/user/dashboard', fn() => view('etudiant'))->name('user.dashboard');
+
     //Partie SECRETAIRE
     Route::get('/liste-demande-verifie-secretaire1', [SecretairePedagogiqueController::class, 'index'])->name('secre1.dashboard');
 
@@ -76,6 +78,12 @@ Route::middleware('auth')->group(function () {
     // Liste des demandes
     Route::get('/admin/demandes', [DemandeController::class, 'index'])->name('listedemandeAdmin');
     Route::get('/admin/demande/{id}', [DemandeController::class, 'show'])->name('demandes.show');
+    Route::get('/user/listdemandes', [DemandeController::class, 'showdemand'])->name('listedemandeUser');
+
+    Route::get('/user/demande', [DemandeController::class, 'show'])->name('demandes.show');
+    Route::get('/user/demandes', [DemandeController::class, 'showdemandPasser'])->name('passerDemande');
+    Route::get('/user/demande/{id}', [DemandeController::class, 'showsuivi'])->name('Suividemandes.show');
+    Route::get('/user/profil', [DemandeController::class, 'showProfil'])->name('profil.show');
 
 
     Route::get('/ajouterUtilisateur', fn() => view('ajouterUtilisateur'))->name('ajouterUtilisateur');
@@ -92,6 +100,7 @@ Route::middleware('auth')->group(function () {
 
 });
 
+Route::post('/demandesss/create', [DemandeController::class, 'store'])->name('demande.store');
 
 Route::get('/home', fn() => view('index'))->name('home');
   
