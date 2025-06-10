@@ -6,9 +6,10 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\DemandeController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Auth\CustomLoginController;
+use App\Http\Controllers\DirecteurMiageController;
 use App\Http\Controllers\SecretaireFinancierController;
 use App\Http\Controllers\SecretairePedagogiqueController;
-
+use App\Http\Controllers\SignerDemandeController;
 
 Route::get('/', function () {
     return view('index');
@@ -52,9 +53,17 @@ Route::middleware('auth')->group(function () {
 
 
     
-    Route::get('/dirc1/dashboard', fn() => view('directeurMiage'))->name('dirc1.dashboard');
     Route::get('/dirc2/dashboard', fn() => view('DirecteurUfr'))->name('dirc2.dashboard');
     Route::get('/respo1/dashboard', fn() => view('responsableNiveau'))->name('respo1.dashboard');
+
+
+    // Routes Directeur Miage
+    
+        Route::get('/directeurMiage/dashboard', [DirecteurMiageController::class, 'dashboard'])->name('dirc1.dashboard');
+        Route::get('/directeurMiage/signer/', [SignerDemandeController::class, 'index'])->name('signerDemande');
+        Route::post('directeurMiage/signer/{demande}', [DirecteurMiageController::class, 'signerDemande'])->name('signer');
+    
+
 
 
     // Liste des demandes

@@ -6,7 +6,7 @@
   <title>Espace Directeur - MIAGE</title>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="dashboard.css" />
+  <link rel="stylesheet" href="{{asset('dashboard.css')}}" />
 </head>
 <body>
 
@@ -25,12 +25,12 @@
         <div class="position-sticky">
           <ul class="nav flex-column text-white">
             <li class="nav-item">
-              <a class="nav-link text-white active" href="directeurMiage.html">
+              <a class="nav-link text-white active" href="{{ route('dirc1.dashboard') }}">
                 <i class="fas fa-tachometer-alt"></i> Tableau de bord
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link text-white" href="demandeASigner.html">
+              <a class="nav-link text-white" href="{{ route('signerDemande') }}">
                 <i class="fas fa-file-signature"></i> Demandes à signer
               </a>
             </li>
@@ -40,7 +40,7 @@
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link text-white" href="#">
+              <a class="nav-link text-white" href="{{ route('logout') }}">
                 <i class="fas fa-sign-out-alt"></i> Déconnexion
               </a>
             </li>
@@ -50,55 +50,45 @@
 
       <!-- Contenu principal -->
       <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 py-4">
-        <div class="row mb-4">
-          <div class="col-md-3">
-            <div class="card text-white bg-primary">
-              <div class="card-body d-flex justify-content-between align-items-center">
-                <div>
-                  <h5 class="card-title">Demandes totales</h5>
-                  <p class="fs-4">120</p>
-                </div>
-                <i class="fas fa-layer-group fa-2x"></i>
-              </div>
-            </div>
+        <!-- Tableau des demandes -->
+        <div class="card">
+          <div class="card-header bg-primary text-white">
+            Demandes à signer
           </div>
-          <div class="col-md-3">
-            <div class="card text-white bg-success">
-              <div class="card-body d-flex justify-content-between align-items-center">
-                <div>
-                  <h5 class="card-title">Signées</h5>
-                  <p class="fs-4">80</p>
-                </div>
-                <i class="fas fa-file-signature fa-2x"></i>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-3">
-            <div class="card text-white bg-warning">
-              <div class="card-body d-flex justify-content-between align-items-center">
-                <div>
-                  <h5 class="card-title">En attente</h5>
-                  <p class="fs-4">30</p>
-                </div>
-                <i class="fas fa-hourglass-half fa-2x"></i>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-3">
-            <div class="card text-white bg-danger">
-              <div class="card-body d-flex justify-content-between align-items-center">
-                <div>
-                  <h5 class="card-title">Rejetées</h5>
-                  <p class="fs-4">10</p>
-                </div>
-                <i class="fas fa-times-circle fa-2x"></i>
-              </div>
+          <div class="card-body">
+            <input type="text" class="form-control mb-3" placeholder="Rechercher une demande...">
+            <div class="table-responsive">
+              <table class="table table-bordered table-hover">
+                <thead class="table-light">
+                  <tr>
+                    <th>#</th>
+                    <th>Étudiant</th>
+                    <th>Type de demande</th>
+                    <th>Date</th>
+                    <th>Détail</th>
+                    <th>Statut</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>1</td>
+                    <td>Sarah B.</td>
+                    <td>Relevé de notes</td>
+                    <td>06/06/2025</td>
+                    <td><a href="voirDetailsDirecteurMiage.html"><i class="fas fa-eye text-primary" role="button"></i></a></td>
+                    <td><span class="badge bg-warning">En attente</span></td>
+                    <td>
+                      <button class="btn btn-success btn-sm" onclick="confirmerSignature()"><i class="fas fa-pen-nib"></i></button>
+                      <button class="btn btn-danger btn-sm" onclick="confirmerRejet()"><i class="fas fa-times"></i></button>
+                    </td>
+                  </tr>
+                  <!-- Autres lignes -->
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
-
-        <!-- Tableau des demandes -->
-        
 
       </main>
     </div>
