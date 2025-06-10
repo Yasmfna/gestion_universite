@@ -7,7 +7,7 @@
   <title>Tableau de Bord Étudiant</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="dashboard.css" />
+  <link rel="stylesheet" href="{{asset('dashboard.css')}}" />
 </head>
 <body>
 
@@ -152,6 +152,8 @@
                 <span class="badge bg-success">Payée</span>
               @elseif($demande->statut === 'Rejetée finance')
                 <span class="badge bg-danger">Rejetée finance</span>
+               @elseif($demande->statut === 'Validée')
+                <span class="badge bg-warning">En Cours</span>
               @else
                 <span class="badge bg-warning text-dark">En attente paiement</span>
               @endif

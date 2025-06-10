@@ -16,6 +16,8 @@
   <!-- Bootstrap Icons pour les cartes statistiques -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
 
+  <!-- CSS personnalisé -->
+  <link rel="stylesheet" href="{{asset('dashboard.css')}}" />
 
 </head>
 <body>

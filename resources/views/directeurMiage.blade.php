@@ -99,6 +99,48 @@
 
         <!-- Tableau des demandes -->
         
+        <div class="card">
+  <div class="card-header bg-success text-white">
+    <i class="fas fa-check-circle"></i> Liste des demandes signées
+  </div>
+  <div class="card-body">
+    @if($demandesigne->isEmpty())
+      <p class="text-muted">Aucune demande signée pour le moment.</p>
+    @else
+    <div class="table-responsive">
+      <table class="table table-bordered table-hover align-middle">
+        <thead class="table-success">
+          <tr>
+            <th>ID</th>
+            <th>Étudiant</th>
+            <th>Type de demande</th>
+            <th>Date de signature</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          @foreach($demandesigne as $demande)
+          <tr>
+            <td>{{ $loop->iteration }}</td>
+            <td>{{ $demande->etudiant->nom }} {{ $demande->etudiant->prenom }}</td>
+            <td>{{ $demande->demandeType->nom }}</td>
+            <td>{{ \Carbon\Carbon::parse($demande->date_signature_miage)->format('d/m/Y à H:i') }}</td>
+            <td>
+              <a href="{{ route('telecharger.pdf', $demande->id) }}" class="btn btn-outline-primary btn-sm">
+                <i class="fas fa-download"></i> Télécharger PDF
+              </a>
+            </td>
+          </tr>
+          @endforeach
+        </tbody>
+      </table>
+    </div>
+    @endif
+  </div>
+</div>
+
+
+
 
       </main>
     </div>

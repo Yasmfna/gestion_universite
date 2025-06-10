@@ -10,6 +10,9 @@ use App\Http\Controllers\DirecteurMiageController;
 use App\Http\Controllers\SecretaireFinancierController;
 use App\Http\Controllers\SecretairePedagogiqueController;
 use App\Http\Controllers\SignerDemandeController;
+use Laravel\SerializableClosure\Contracts\Signer;
+use App\Http\Controllers\DirecteurUFRController;
+use PhpParser\Node\Scalar\MagicConst\Dir;
 
 Route::get('/', function () {
     return view('index');
@@ -62,9 +65,13 @@ Route::middleware('auth')->group(function () {
         Route::get('/directeurMiage/dashboard', [DirecteurMiageController::class, 'dashboard'])->name('dirc1.dashboard');
         Route::get('/directeurMiage/signer/', [SignerDemandeController::class, 'index'])->name('signerDemande');
         Route::post('directeurMiage/signer/{demande}', [DirecteurMiageController::class, 'signerDemande'])->name('signer');
-    
+        Route::get('/demande/dirc1/{id}', [SignerDemandeController::class, 'show']);
+        Route::post('/demande/{demande}/signer', [SignerDemandeController::class, 'signerDemande'])->name('signer.demande.action');
+        Route::get('/telecharger/{id}', [SignerDemandeController::class, 'telechargerPDF'])->name('telecharger.pdf'); 
 
-
+    // Route Directeur UFR
+    Route::get('/directeurUfr/dashboard', [DirecteurUFRController::class, 'dashboard'])->name('dirc2.dashboard');
+    Route::get('/listeDemandeUFR', [DirecteurUFRController::class, 'indexDemande'])->name('listeDemande');
 
     // Liste des demandes
     Route::get('/admin/demandes', [DemandeController::class, 'index'])->name('listedemandeAdmin');

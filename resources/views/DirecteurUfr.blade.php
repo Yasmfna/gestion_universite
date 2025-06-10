@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Tableau de Bord Responsable de Niveau</title>
+  <title>Tableau de Bord Directeur UFR </title>
 
   <!-- Font Awesome pour les icônes sidebar, navbar -->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet" />
@@ -16,7 +16,7 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
 
   <!-- CSS personnalisé -->
-  <link rel="stylesheet" href="dashboard.css" />
+  <link rel="stylesheet" href="{{asset('dashboard.css')}}" />
 </head>
 <body>
 
@@ -31,7 +31,7 @@
       <div class="collapse navbar-collapse justify-content-between" id="navbarContent">
         <!-- Texte de bienvenue centré -->
         <span class="navbar-text mx-auto text-white fw-bold">
-          Bienvenue sur votre espace cher Responsable de Niveau
+          Bienvenue sur votre espace cher Directeur de UFR
         </span>
 
         <!-- Cloche de notification à droite -->
@@ -58,12 +58,12 @@
         <div class="position-sticky">
           <ul class="nav flex-column text-white">
             <li class="nav-item">
-              <a class="nav-link text-white active" href="DirecteurUfr.html">
+              <a class="nav-link text-white active" href="/directeurUfr/dashboard">
                 <i class="fas fa-tachometer-alt"></i> Tableau de bord
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link text-white" href="listeDemandeUFR.html">
+              <a class="nav-link text-white" href="/listeDemandeUFR">
                 <i class="fas fa-file-alt"></i>Liste des Démandes 
               </a>
             </li>
@@ -83,66 +83,84 @@
 
       <!-- Contenu principal -->
       <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 py-4">
-            <h2 class="mb-4 text-primary">Les demandes par Niveau </h2>
-            <!-- Barre de recherche -->
-            <div class="row mb-3">
-              <div class="col-md-6">
-                <input type="text" id="searchInput" class="form-control" placeholder="Rechercher une demande...">
-              </div>
-            </div>
+  <div class="row g-3 mb-4">
+    <div class="col-md-3">
+      <div class="card text-white bg-primary">
+        <div class="card-body d-flex justify-content-between align-items-center">
+          <div>
+            <h5 class="card-title">Demandes totales</h5>
+            <p class="fs-4">{{ $stats['total'] }}</p>
+          </div>
+          <i class="bi bi-collection fs-1"></i>
+        </div>
+      </div>
+    </div>
 
-            <!-- Tableau des demandes -->
-            <div class="card shadow-sm">
-              <div class="card-body table-responsive">
-                <table class="table table-hover align-middle" id="demandesTable">
-                  <thead class="table-light">
-                    <tr>
-                      <th>Type de demande</th>
-                      <th>Date de soumission</th>
-                      <th>Détail</th>
-                      <th>Statut</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td>Relevé de notes provisoire</td>
-                      <td>28 mai 2025</td>
-                      <td>
-                        <a href="voirDetailsDirecteurUfr.html" class="btn btn-sm btn-outline-primary">
-                          <i class="fas fa-eye"></i>
-                        </a>
-                      </td>
-                      <td><span class="badge bg-success">Validée</span></td>
-                    </tr>
-                    <tr>
-                      <td>Attestation de fréquentation</td>
-                      <td>22 mai 2025</td>
-                      <td>
-                        <a href="voirDetailsDirecteurUfr.html" class="btn btn-sm btn-outline-primary">
-                          <i class="fas fa-eye"></i>
-                        </a>
-                      </td>
-                      <td><span class="badge bg-warning">En cours</span></td>
-                    </tr>
-                    <tr>
-                      <td>Lettre de recommandation</td>
-                      <td>10 mai 2025</td>
-                      <td>
-                        <a href="voirDetailsDirecteurUfr.html" class="btn btn-sm btn-outline-primary">
-                          <i class="fas fa-eye"></i>
-                        </a>
-                      </td>
-                      <td><span class="badge bg-danger">Rejetée</span></td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
+    <div class="col-md-3">
+      <div class="card text-white bg-success">
+        <div class="card-body d-flex justify-content-between align-items-center">
+          <div>
+            <h5 class="card-title">Validées</h5>
+            <p class="fs-4">{{ $stats['validees'] }}</p>
+          </div>
+          <i class="bi bi-check2-circle fs-1"></i>
+        </div>
+      </div>
+    </div>
 
+    <div class="col-md-3">
+      <div class="card text-white bg-warning">
+        <div class="card-body d-flex justify-content-between align-items-center">
+          <div>
+            <h5 class="card-title">En cours</h5>
+            <p class="fs-4">{{ $stats['en_cours'] }}</p>
+          </div>
+          <i class="bi bi-hourglass-split fs-1"></i>
+        </div>
+      </div>
+    </div>
 
-        <!-- Ici tu peux continuer avec le reste du contenu principal -->
+    <div class="col-md-3">
+      <div class="card text-white bg-info">
+        <div class="card-body d-flex justify-content-between align-items-center">
+          <div>
+            <h5 class="card-title">A Jour</h5>
+            <p class="fs-4">{{ $stats['payees'] }}</p>
+          </div>
+          <i class="bi bi-wallet2 fs-1"></i>
+        </div>
+      </div>
+    </div>
 
-      </main>
+    <div class="col-md-3 mt-3">
+      <div class="card text-white bg-danger">
+        <div class="card-body d-flex justify-content-between align-items-center">
+          <div>
+            <h5 class="card-title">Rejetées Finance</h5>
+            <p class="fs-4">{{ $stats['rejetees_finance'] }}</p>
+          </div>
+          <i class="bi bi-x-octagon fs-1"></i>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-3">
+      <div class="card text-white bg-info">
+        <div class="card-body d-flex justify-content-between align-items-center">
+          <div>
+            <h5 class="card-title">Signées</h5>
+            <p class="fs-4">{{ $stats['signees'] }}</p>
+          </div>
+          <i class="bi bi-wallet2 fs-1"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Ici tu peux continuer avec le reste du contenu principal -->
+
+</main>
+
     </div>
   </div>
 

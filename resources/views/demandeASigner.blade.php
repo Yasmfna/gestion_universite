@@ -6,7 +6,7 @@
   <title>Espace Directeur - MIAGE</title>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="{{asset('dashboard.css')}}" />
+  <link rel="stylesheet" href="{{ asset('dashboard.css') }}" />
 </head>
 <body>
 
@@ -50,7 +50,13 @@
 
       <!-- Contenu principal -->
       <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 py-4">
-        <!-- Tableau des demandes -->
+        <!-- Messages de session -->
+        @if(session('success'))
+          <div class="alert alert-success">{{ session('success') }}</div>
+        @elseif(session('error'))
+          <div class="alert alert-danger">{{ session('error') }}</div>
+        @endif
+
         <div class="card">
           <div class="card-header bg-primary text-white">
             Demandes à signer
@@ -71,44 +77,45 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td>1</td>
-                    <td>Sarah B.</td>
-                    <td>Relevé de notes</td>
-                    <td>06/06/2025</td>
-                    <td><a href="voirDetailsDirecteurMiage.html"><i class="fas fa-eye text-primary" role="button"></i></a></td>
-                    <td><span class="badge bg-warning">En attente</span></td>
-                    <td>
-                      <button class="btn btn-success btn-sm" onclick="confirmerSignature()"><i class="fas fa-pen-nib"></i></button>
-                      <button class="btn btn-danger btn-sm" onclick="confirmerRejet()"><i class="fas fa-times"></i></button>
-                    </td>
-                  </tr>
-                  <!-- Autres lignes -->
+                  @forelse($demandes as $demande)
+                    <tr>
+                      <td>{{ $demande->id }}</td>
+                      <td>{{ $demande->etudiant->nom ?? 'N/A' }} {{ $demande->etudiant->prenom ?? '' }}</td>
+                      <td>{{ $demande->demandeType->nom ?? 'Non défini' }}</td>
+                      <td>{{ $demande->created_at->format('d M Y') }}</td>
+                      <td>
+                        <a href="{{ url('/demande/dirc1/'.$demande->id) }}">
+                          <i class="fas fa-eye text-primary" role="button"></i>
+                        </a>
+                      </td>
+                      <td>
+                        @if($demande->statut === 'Payée')
+                    <span class="badge bg-warning">En cours</span></td>
+                    @endif
+                      </td>
+                      <td>
+                        <form action="{{ route('signer.demande.action', $demande->id) }}" method="POST" style="display:inline;">
+                          @csrf
+                          <button type="submit" class="btn btn-success btn-sm" onclick="return confirm('Confirmer la signature ?')">
+                            <i class="fas fa-pen-nib"></i>
+                          </button>
+                        </form>
+                        
+                      </td>
+                    </tr>
+                  @empty
+                    <tr>
+                      <td colspan="7" class="text-center">Aucune demande à afficher.</td>
+                    </tr>
+                  @endforelse
                 </tbody>
               </table>
             </div>
           </div>
         </div>
-
       </main>
     </div>
   </div>
-
-  <script>
-    function confirmerSignature() {
-      if (confirm("Êtes-vous sûr de vouloir apposer votre signature et cachet sur ce document ?")) {
-        alert("Signature apposée avec succès.");
-        // Redirection ou appel backend ici
-      }
-    }
-
-    function confirmerRejet() {
-      if (confirm("Êtes-vous sûr de vouloir rejeter cette demande ?")) {
-        alert("Demande rejetée.");
-        // Redirection ou appel backend ici
-      }
-    }
-  </script>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>

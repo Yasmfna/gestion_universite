@@ -99,7 +99,7 @@
               <td>{{ $demande->created_at->format('d/m/Y') }}</td>
               <td>{{ number_format($demande->etudiant->montant_paye ?? 0, 0, ',', ' ') }} FCFA</td>
               <td>
-                <a href="{{ url('/demande/secretaire1/'.$demande->id) }}" class="text-primary">
+                <a href="{{ url('/demande/secretaire2/'.$demande->id) }}" class="text-primary">
                   <i class="fas fa-eye"></i>
                 </a>
               </td>

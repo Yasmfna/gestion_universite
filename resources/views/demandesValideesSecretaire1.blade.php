@@ -120,7 +120,7 @@
                   <tbody>
                     @forelse($demandes as $demande)
                     <tr>
-                      <td>{{ $loop->iteration }}</td>
+                      <td>#</td>
                       <td>{{ $demande->etudiant->nom }} {{ $demande->etudiant->prenom }}</td>
                       <td>{{ $demande->demandeType->nom }}</td>
                       <td>{{ $demande->created_at->format('d/m/Y') }}</td>
