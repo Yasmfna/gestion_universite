@@ -6,6 +6,8 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\DemandeController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Auth\CustomLoginController;
+use App\Http\Controllers\SecretaireFinancierController;
+use App\Http\Controllers\SecretairePedagogiqueController;
 
 
 Route::get('/', function () {
@@ -21,8 +23,35 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::get('/admin/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
-    Route::get('/secre1/dashboard', fn() => view('secretaire1'))->name('secre1.dashboard');
-    Route::get('/secre2/dashboard', fn() => view('secretaire2'))->name('secre2.dashboard');
+    
+    //Partie SECRETAIRE
+    Route::get('/liste-demande-verifie-secretaire1', [SecretairePedagogiqueController::class, 'index'])->name('secre1.dashboard');
+
+    Route::post('/dashboard/pedagogique/action', [SecretairePedagogiqueController::class, 'validerOuRejeter']);
+    Route::get('/demandes-validees-secretaire1', [SecretairePedagogiqueController::class, 'indexValidees']);
+
+    Route::get('/demandes-rejetees-secretaire1', [SecretairePedagogiqueController::class, 'indexRejetees']);
+
+    Route::get('/demande/secretaire1/{id}', [SecretairePedagogiqueController::class, 'show']);
+    Route::get('/dashboard/secretaire1', [SecretairePedagogiqueController::class, 'dashboard']);
+
+
+
+
+    Route::get('/liste-demande-verifie-secretaire2', [SecretaireFinancierController::class, 'index'])->name('secre2.dashboard');;
+
+    Route::post('/secretaire/Financier/action', [SecretaireFinancierController::class, 'traiter']);
+    Route::post('/secretaire2/traiter', [SecretaireFinancierController::class, 'traiter'])->name('secretaire2.traiter');
+    Route::get('/demandes-validees-secretaire2', [SecretaireFinancierController::class, 'indexValidees']);
+
+    Route::get('/demandes-rejetees-secretaire2', [SecretaireFinancierController::class, 'indexRejetees']);
+
+    Route::get('/demande/secretaire2/{id}', [SecretaireFinancierController::class, 'show']);
+
+    Route::get('/dashboard/secretaire2', [SecretaireFinancierController::class, 'dashboard']);
+
+
+    
     Route::get('/dirc1/dashboard', fn() => view('directeurMiage'))->name('dirc1.dashboard');
     Route::get('/dirc2/dashboard', fn() => view('DirecteurUfr'))->name('dirc2.dashboard');
     Route::get('/respo1/dashboard', fn() => view('responsableNiveau'))->name('respo1.dashboard');
@@ -51,7 +80,7 @@ Route::middleware('auth')->group(function () {
 Route::get('/home', fn() => view('index'))->name('home');
   
 
-Route::get('/login_P', [CustomLoginController::class, 'showLoginForm'])->name('login');
+Route::get('/login_P', [CustomLoginController::class, 'showLoginForm'])->name('login.connecter');
 Route::post('/login-submit', [CustomLoginController::class, 'login'])->name('login.submit');
 
 Route::get('/logout', [CustomLoginController::class, 'logout'])->name('logout');

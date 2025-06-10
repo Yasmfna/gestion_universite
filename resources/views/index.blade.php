@@ -29,7 +29,7 @@
           <li class="nav-item"><a class="nav-link active" href="#">Accueil</a></li>
           <li class="nav-item"><a class="nav-link" href="#apropos">À propos</a></li>
           <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
-          <li class="nav-item"><a class="nav-link" href="{{route('login')}}"><i class="fas fa-sign-in-alt me-1"></i>Se connecter</a></li>
+          <li class="nav-item"><a class="nav-link" href="{{route('login.connecter')}}"><i class="fas fa-sign-in-alt me-1"></i>Se connecter</a></li>
         </ul>
       </div>
     </div>

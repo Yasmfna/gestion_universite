@@ -1,3 +1,4 @@
+@vite(['resources/css/dashboard.css'])
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -15,8 +16,7 @@
   <!-- Bootstrap Icons pour les cartes statistiques -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
 
-  <!-- CSS personnalisé -->
-  <link rel="stylesheet" href="dashboard.css" />
+
 </head>
 <body>
 
@@ -58,22 +58,22 @@
         <div class="position-sticky">
           <ul class="nav flex-column text-white">
             <li class="nav-item">
-              <a class="nav-link text-white active" href="secretaire1.html">
+              <a class="nav-link text-white active" href="/dashboard/secretaire1">
                 <i class="fas fa-tachometer-alt"></i> Tableau de bord
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link text-white" href="listeDemandeVerifieSecretaire1.html">
+              <a class="nav-link text-white" href="/liste-demande-verifie-secretaire1">
                 <i class="fas fa-file-alt"></i> Démandes à vérifier
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link text-white" href="demandesValideesSecretaire1.html">
+              <a class="nav-link text-white" href="/demandes-validees-secretaire1">
                 <i class="fas fa-check-circle"></i> Démandes validées
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link text-white" href="demandesRejeteesSecretaire1.html">
+              <a class="nav-link text-white" href="/demandes-rejetees-secretaire1">
                 <i class="fas fa-ban"></i> Démandes rejetées
               </a>
             </li>
@@ -83,7 +83,7 @@
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link text-white" href="#">
+              <a class="nav-link text-white" href="{{ route('logout') }}">
                 <i class="fas fa-sign-out-alt"></i> Déconnexion
               </a>
             </li>
@@ -113,26 +113,41 @@
                 </tr>
               </thead>
               <tbody>
+                 @forelse($demandes as $id => $demande)
                 <tr>
-                  <td>1</td>
-                  <td>Jean K.</td>
-                  <td>Attestation de réussite</td>
-                  <td>04/06/2025</td>
+                  <td>{{ $id + 1 }}</td>
+                  <td>{{ $demande->etudiant->prenom }} {{ $demande->etudiant->nom }}</td>
+                  <td>{{ $demande->demandeType->nom }}</td>
+                  <td>{{ $demande->created_at->format('d/m/Y') }}</td>
                   <td>
-                    <a href="voirDetailsSecretaire1.html" title="Voir le détail">
+                    <a href="{{ url('/demande/'.$demande->id) }}" title="Voir le détail">
                       <i class="bi bi-eye text-primary" role="button"></i>
                     </a>
                   </td>
-                  <td><span class="badge bg-warning">En cours</span></td>
                   <td>
-                    <button class="btn btn-success btn-sm" onclick="confirmerValidation()">
-                      <i class="bi bi-check"></i>
-                    </button>
-                    <button class="btn btn-danger btn-sm" onclick="confirmerRejet()">
-                      <i class="bi bi-x"></i>
-                    </button>
-                  </td>
-                </tr>
+                    @if($demande->statut === 'En Cours')
+                    <span class="badge bg-warning">En cours</span></td>
+                    @elseif(str_contains($demande->statut, 'Annulé'))
+                    <span class="badge bg-danger">Rejetée</span></td>
+                     @else
+                    <span class="badge bg-success">Validée</span></td>
+                    @endif
+                    <td>
+                      <form method="POST" action="{{ url('/dashboard/pedagogique/action') }}">
+                        @csrf
+                        <input type="hidden" name="id" value="{{ $demande->id }}">
+                        <button class="btn btn-success btn-sm" name="action" value="valider" title="Valider">
+                          <i class="bi bi-check"></i>
+                        </button>
+                        <button class="btn btn-danger btn-sm" name="action" value="rejeter" title="Rejeter">
+                          <i class="bi bi-x"></i>
+                        </button>
+                      </form>
+                    </td>
+                  </tr>
+                @empty
+                  <tr><td colspan="7" class="text-center">Aucune demande à afficher.</td></tr>
+                @endforelse
                 <!-- Autres lignes -->
               </tbody>
             </table>

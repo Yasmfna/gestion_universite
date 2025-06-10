@@ -1,3 +1,4 @@
+@vite(['resources/css/dashboard.css'])
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -16,8 +17,10 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
 
   <!-- CSS personnalisé -->
-  <link rel="stylesheet" href="dashboard.css" />
+  <link rel="stylesheet" href="{{asset('dashboard.css')}}" />
 </head>
+
+
 <body>
 
   <!-- Navbar en haut -->
@@ -58,22 +61,22 @@
         <div class="position-sticky">
           <ul class="nav flex-column text-white">
             <li class="nav-item">
-              <a class="nav-link text-white active" href="secretaire1.html">
+              <a class="nav-link text-white active" href="/dashboard/secretaire1">
                 <i class="fas fa-tachometer-alt"></i> Tableau de bord
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link text-white" href="listeDemandeVerifieSecretaire1.html">
+              <a class="nav-link text-white" href="/liste-demande-verifie-secretaire1">
                 <i class="fas fa-file-alt"></i> Démandes à vérifier
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link text-white" href="demandesValideesSecretaire1.html">
+              <a class="nav-link text-white" href="/demandes-validees-secretaire1">
                 <i class="fas fa-check-circle"></i> Démandes validées
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link text-white" href="demandesRejeteesSecretaire1.html">
+              <a class="nav-link text-white" href="/demandes-rejetees-secretaire1">
                 <i class="fas fa-ban"></i> Démandes rejetées
               </a>
             </li>
@@ -83,7 +86,7 @@
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link text-white" href="#">
+              <a class="nav-link text-white" href="{{ route('logout') }}">
                 <i class="fas fa-sign-out-alt"></i> Déconnexion
               </a>
             </li>
@@ -99,7 +102,7 @@
               <div class="card-body d-flex justify-content-between align-items-center">
                 <div>
                   <h5 class="card-title">Demandes totales</h5>
-                  <p class="fs-4">120</p>
+                  <p class="fs-4">{{ $stats['total'] }}</p>
                 </div>
                 <i class="bi bi-collection fs-1"></i>
               </div>
@@ -111,7 +114,7 @@
               <div class="card-body d-flex justify-content-between align-items-center">
                 <div>
                   <h5 class="card-title">Validées</h5>
-                  <p class="fs-4">85</p>
+                  <p class="fs-4">{{ $stats['validees'] }}</p>
                 </div>
                 <i class="bi bi-check2-circle fs-1"></i>
               </div>
@@ -123,7 +126,7 @@
               <div class="card-body d-flex justify-content-between align-items-center">
                 <div>
                   <h5 class="card-title">En cours</h5>
-                  <p class="fs-4">25</p>
+                  <p class="fs-4">{{ $stats['en_cours'] }}</p>
                 </div>
                 <i class="bi bi-hourglass-split fs-1"></i>
               </div>
@@ -135,13 +138,63 @@
               <div class="card-body d-flex justify-content-between align-items-center">
                 <div>
                   <h5 class="card-title">Rejetées</h5>
-                  <p class="fs-4">10</p>
+                  <p class="fs-4">{{ $stats['rejetees'] }}</p>
                 </div>
                 <i class="bi bi-x-octagon fs-1"></i>
               </div>
             </div>
           </div>
         </div>
+
+        <div class="row mt-5">
+  <div class="row mt-4">
+  <div class="col-md-6 mx-auto">
+    <div class="card shadow rounded-4">
+      <div class="card-header bg-white border-0 text-center">
+        <h5 class="fw-bold mb-0">Répartition des demandes</h5>
+      </div>
+      <div class="card-body">
+        <canvas id="demandeChart" height="250"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+
+@push('scripts')
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  const ctx = document.getElementById('demandeChart');
+  new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+      labels: ['Validées', 'En cours', 'Rejetées'],
+      datasets: [{
+        label: 'Répartition',
+        data: [{{ $stats['validees'] }}, {{ $stats['en_cours'] }}, {{ $stats['rejetees'] }}],
+        backgroundColor: [
+          'rgba(25, 135, 84, 0.7)',
+          'rgba(255, 193, 7, 0.7)',
+          'rgba(220, 53, 69, 0.7)'
+        ],
+        borderColor: [
+          'rgba(25, 135, 84, 1)',
+          'rgba(255, 193, 7, 1)',
+          'rgba(220, 53, 69, 1)'
+        ],
+        borderWidth: 1
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: {
+          position: 'bottom'
+        }
+      }
+    }
+  });
+</script>
+@endpush
 
         <!-- Ici tu peux continuer avec le reste du contenu principal -->
 
@@ -151,5 +204,7 @@
 
   <!-- Bootstrap JS Bundle -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+  @stack('scripts')
 </body>
 </html>

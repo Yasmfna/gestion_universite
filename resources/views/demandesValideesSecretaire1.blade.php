@@ -1,3 +1,4 @@
+@vite(['resources/css/dashboard.css'])
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -58,22 +59,22 @@
         <div class="position-sticky">
           <ul class="nav flex-column text-white">
             <li class="nav-item">
-              <a class="nav-link text-white active" href="secretaire1.html">
+              <a class="nav-link text-white active" href="/dashboard/secretaire1">
                 <i class="fas fa-tachometer-alt"></i> Tableau de bord
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link text-white" href="listeDemandeVerifieSecretaire1.html">
+              <a class="nav-link text-white" href="/liste-demande-verifie-secretaire1">
                 <i class="fas fa-file-alt"></i> Démandes à vérifier
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link text-white" href="demandesValideesSecretaire1.html">
+              <a class="nav-link text-white" href="/demandes-validees-secretaire1">
                 <i class="fas fa-check-circle"></i> Démandes validées
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link text-white" href="demandesRejeteesSecretaire1.html">
+              <a class="nav-link text-white" href="/demandes-rejetees-secretaire1">
                 <i class="fas fa-ban"></i> Démandes rejetées
               </a>
             </li>
@@ -83,7 +84,7 @@
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link text-white" href="#">
+              <a class="nav-link text-white" href="{{ route('logout') }}">
                 <i class="fas fa-sign-out-alt"></i> Déconnexion
               </a>
             </li>
@@ -93,7 +94,7 @@
 
       <!-- Contenu principal -->
       <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 py-4">
-        <h2 class="mb-4 text-primary">Demandes Rejetées</h2>
+        <h2 class="mb-4 text-primary">Demandes validées</h2>
             <!-- Barre de recherche -->
             <div class="row mb-3">
               <div class="col-md-6">
@@ -107,47 +108,49 @@
                 <table class="table table-hover align-middle" id="demandesTable">
                   <thead class="table-light">
                     <tr>
+                      <th>#</th>
+                      <th>Étudiant</th>
                       <th>Type de demande</th>
                       <th>Date de soumission</th>
-                      <th>Détail</th>
+                      <th>Détails</th>
                       <th>Statut</th>
+                      <th>Action</th>
                     </tr>
                   </thead>
                   <tbody>
+                    @forelse($demandes as $demande)
                     <tr>
-                      <td>Relevé de notes provisoire</td>
-                      <td>28 mai 2025</td>
+                      <td>{{ $loop->iteration }}</td>
+                      <td>{{ $demande->etudiant->nom }} {{ $demande->etudiant->prenom }}</td>
+                      <td>{{ $demande->demandeType->nom }}</td>
+                      <td>{{ $demande->created_at->format('d/m/Y') }}</td>
                       <td>
-                        <a href="voirDetailsSecretaire1.html" class="btn btn-sm btn-outline-primary">
+                        <a href="{{ url('/demande/secretaire1/'.$demande->id) }}" class="btn btn-sm btn-outline-primary">
                           <i class="fas fa-eye"></i>
                         </a>
                       </td>
-                      <td><span class="badge bg-success">Validée</span></td>
-                    </tr>
-                    <tr>
-                      <td>Attestation de fréquentation</td>
-                      <td>22 mai 2025</td>
+                      <td><span class="badge bg-success">{{ $demande->statut}}</span></td>
                       <td>
-                        <a href="voirDetailsSecretaire1.html" class="btn btn-sm btn-outline-primary">
-                          <i class="fas fa-eye"></i>
-                        </a>
-                      </td>
-                      <td><span class="badge bg-warning">En cours</span></td>
+                      <form method="POST" action="{{ url('/dashboard/pedagogique/action') }}">
+                        @csrf
+                        <input type="hidden" name="id" value="{{ $demande->id }}">
+                        <button class="btn btn-danger btn-sm" name="action" value="rejeter" title="Rejeter">
+                          <i class="bi bi-x"></i>
+                        </button>
+                      </form>
+                    </td>
                     </tr>
+                    @empty
                     <tr>
-                      <td>Lettre de recommandation</td>
-                      <td>10 mai 2025</td>
-                      <td>
-                        <a href="voirDetailsSecretaire1.html" class="btn btn-sm btn-outline-primary">
-                          <i class="fas fa-eye"></i>
-                        </a>
-                      </td>
-                      <td><span class="badge bg-danger">Rejetée</span></td>
+                      <td colspan="5" class="text-center">Aucune demande validée pour le moment.</td>
                     </tr>
+                  @endforelse
+                    
                   </tbody>
                 </table>
               </div>
             </div>
+
         <!-- Ici tu peux continuer avec le reste du contenu principal -->
 
       </main>

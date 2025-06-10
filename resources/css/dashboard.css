@@ -1,0 +1,144 @@
+body {
+  background-color: #f4f6fa;
+  padding-top: 56px; /* hauteur navbar */
+}
+
+.sidebar {
+  min-height: 100vh;
+}
+
+.bg-primary {
+  background-color: #001f4d !important; /* Bleu foncé Université de Cocody */
+}
+
+.text-primary {
+  color: #001f4d !important;
+}
+
+.card-header.bg-primary {
+  background-color: #001f4d !important;
+}
+
+.table th, .table td {
+  vertical-align: middle;
+}
+
+.badge.bg-warning {
+  background-color: #ffc107 !important;
+}
+
+.badge.bg-success {
+  background-color: #28a745 !important;
+}
+
+.badge.bg-danger {
+  background-color: #dc3545 !important;
+}
+
+/* Style sidebar liens */
+.sidebar {
+  background-color: #001f4d !important;
+  min-height: 100vh;
+}
+
+.sidebar .nav-link {
+  font-weight: 500;
+  padding: 12px 20px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  border-radius: 0 25px 25px 0;
+  margin-bottom: 5px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.sidebar .nav-link:hover {
+  background-color: #003366; /* Bleu plus clair au hover */
+  color: #fff !important;
+  text-decoration: none;
+}
+
+.sidebar .nav-link.active {
+  background-color: #00509e;
+  color: #fff !important;
+  font-weight: 700;
+  box-shadow: 2px 0 8px rgba(0,80,158,0.7);
+}
+
+/* Icônes dans sidebar */
+.sidebar .nav-link i {
+  min-width: 20px;
+  font-size: 1.1rem;
+}
+.timeline-horizontal {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  overflow-x: auto;
+  padding: 20px;
+  background-color: #f4f6fa;
+  border-radius: 12px;
+  box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.timeline-horizontal .step {
+  text-align: center;
+  flex: 1;
+  position: relative;
+}
+
+.timeline-horizontal .step:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  top: 30px;
+  right: -50%;
+  width: 100%;
+  height: 4px;
+  background-color: #ccc;
+  z-index: 0;
+}
+
+.timeline-horizontal .step .icon {
+  background-color: #ccc;
+  color: white;
+  border-radius: 50%;
+  padding: 12px;
+  font-size: 18px;
+  margin: 0 auto 8px;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+}
+
+.timeline-horizontal .step.done .icon {
+  background-color: #28a745;
+}
+
+.timeline-horizontal .step.notified .icon {
+  background-color: #17a2b8;
+}
+
+.timeline-horizontal .step.pending .icon {
+  background-color: #ffc107;
+}
+
+.timeline-horizontal .step.disabled .icon {
+  background-color: #6c757d;
+}
+
+.timeline-horizontal .step .label {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #001f4d;
+}
+
+
+/* Responsive adjustments for smaller screens */
+@media (max-width: 767.98px) {
+  #sidebar {
+    display: none; /* cacher sidebar sur petit écran, à gérer autrement */
+  }
+}

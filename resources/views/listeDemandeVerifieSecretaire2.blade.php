@@ -1,3 +1,4 @@
+@vite(['resources/css/dashboard.css'])
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -35,22 +36,22 @@
       <div class="position-sticky">
         <ul class="nav flex-column text-white">
           <li class="nav-item">
-            <a class="nav-link text-white active" href="secretaire2.html">
+            <a class="nav-link text-white active" href="/dashboard/secretaire2">
               <i class="fas fa-tachometer-alt"></i> Tableau de bord
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link text-white" href="listeDemandeVerifieSecretaire2.html">
+            <a class="nav-link text-white" href="/liste-demande-verifie-secretaire2">
               <i class="fas fa-file-invoice-dollar"></i> Demandes à vérifier (Paiement)
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link text-white" href="demandesValideesSecretaire2.html">
+            <a class="nav-link text-white" href="/demandes-validees-secretaire2">
               <i class="fas fa-check-circle"></i> Demandes validées
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link text-white" href="demandesRejeteesSecretaire2.html">
+            <a class="nav-link text-white" href="/demandes-rejetees-secretaire2">
               <i class="fas fa-times-circle"></i> Demandes rejetées
             </a>
           </li>
@@ -60,7 +61,7 @@
               </a>
             </li>
           <li class="nav-item">
-            <a class="nav-link text-white" href="#">
+            <a class="nav-link text-white" href="{{ route('logout') }}">
               <i class="fas fa-sign-out-alt"></i> Déconnexion
             </a>
           </li>
@@ -72,38 +73,57 @@
     <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 py-4">
       <div class="card">
         <div class="card-header bg-primary text-white">
-          Liste des demandes rejetées (Paiement)
+          Liste des demandes à vérifier (Paiement)
         </div>
         <div class="card-body">
           <input type="text" class="form-control mb-3" placeholder="Rechercher une demande...">
           <div class="table-responsive">
-            <table class="table table-bordered table-hover">
-              <thead class="table-light">
-                <tr>
-                  <th>#</th>
-                  <th>Nom Étudiant</th>
-                  <th>Type</th>
-                  <th>Date</th>
-                  <th>Scolarité Payé</th>
-                  <th>Détail</th>
-                  <th>Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>1</td>
-                  <td>Koffi A.</td>
-                  <td>Relevé de notes</td>
-                  <td>04/06/2025</td>
-                  <td>400 000 FCFA</td>
-                  <td><a href="voirDetailsSecretaire2.html"><i class="fas fa-eye text-primary"></i></a></td>
-                  <td>
-                    <button class="btn btn-success btn-sm" onclick="confirmerValidation()"><i class="fas fa-check"></i></button>
-                    <button class="btn btn-danger btn-sm" onclick="confirmerRejet()"><i class="fas fa-times"></i></button>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+                  <table class="table table-bordered table-hover align-middle">
+        <thead class="table-light">
+          <tr>
+            <th>#</th>
+            <th>Nom de l'étudiant</th>
+            <th>Type</th>
+            <th>Date</th>
+            <th>Scolarité payée</th>
+            <th>Détail</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          @forelse($demandes as $index => $demande)
+            <tr>
+              <td>{{ $index + 1 }}</td>
+              <td>{{ $demande->etudiant->prenom }} {{ $demande->etudiant->nom }}</td>
+              <td>{{ $demande->demandeType->nom }}</td>
+              <td>{{ $demande->created_at->format('d/m/Y') }}</td>
+              <td>{{ number_format($demande->etudiant->montant_paye ?? 0, 0, ',', ' ') }} FCFA</td>
+              <td>
+                <a href="{{ url('/demande/secretaire1/'.$demande->id) }}" class="text-primary">
+                  <i class="fas fa-eye"></i>
+                </a>
+              </td>
+              <td>
+                <form method="POST" action="{{ route('secretaire2.traiter') }}">
+                  @csrf
+                  <input type="hidden" name="id" value="{{ $demande->id }}">
+                  <button name="action" value="valider" class="btn btn-success btn-sm me-1">
+                    <i class="fas fa-check"></i>
+                  </button>
+                  <button name="action" value="rejeter" class="btn btn-danger btn-sm">
+                    <i class="fas fa-times"></i>
+                  </button>
+                </form>
+              </td>
+            </tr>
+          @empty
+            <tr>
+              <td colspan="7" class="text-center text-muted">Aucune demande à traiter.</td>
+            </tr>
+          @endforelse
+        </tbody>
+      </table>
+
           </div>
         </div>
       </div>

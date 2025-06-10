@@ -1,3 +1,4 @@
+@vite(['resources/css/dashboard.css'])
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -22,7 +23,7 @@
     <div class="collapse navbar-collapse justify-content-between" id="navbarContent">
       <!-- Texte de bienvenue centré -->
       <span class="navbar-text mx-auto text-white fw-bold">
-        Bienvenue sur votre espace Secrétaire financier
+        Bienvenue sur votre espace étudiant
       </span>
 
       <!-- Cloche de notification à droite -->
@@ -46,48 +47,48 @@
         <!-- Sidebar gauche -->
         <!-- Sidebar gauche -->
         <nav id="sidebar" class="col-md-2 d-none d-md-block bg-primary sidebar pt-5">
-          <div class="position-sticky">
-            <ul class="nav flex-column text-white">
-              <li class="nav-item">
-                <a class="nav-link text-white active" href="secretaire2.html">
-                  <i class="fas fa-tachometer-alt"></i> Tableau de bord
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link text-white" href="listeDemandeVerifieSecretaire2.html">
-                  <i class="fas fa-file-invoice-dollar"></i> Demandes à vérifier (Paiement)
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link text-white" href="demandesValideesSecretaire2.html">
-                  <i class="fas fa-check-circle"></i> Demandes validées
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link text-white" href="demandesRejeteesSecretaire2.html">
-                  <i class="fas fa-times-circle"></i> Demandes rejetées
-                </a>
-              </li>
-              <li class="nav-item">
-                  <a class="nav-link text-white" href="profilSecretaire2.html">
-                    <i class="fas fa-user-circle"></i> Mon profil
-                  </a>
-                </li>
-              <li class="nav-item">
-                <a class="nav-link text-white" href="#">
-                  <i class="fas fa-sign-out-alt"></i> Déconnexion
-                </a>
-              </li>
-            </ul>
-          </div>
-       </nav>
+        <div class="position-sticky">
+          <ul class="nav flex-column text-white">
+            <li class="nav-item">
+              <a class="nav-link text-white active" href="/dashboard/secretaire1">
+                <i class="fas fa-tachometer-alt"></i> Tableau de bord
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-white" href="/liste-demande-verifie-secretaire1">
+                <i class="fas fa-file-alt"></i> Démandes à vérifier
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-white" href="/demandes-validees-secretaire1">
+                <i class="fas fa-check-circle"></i> Démandes validées
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-white" href="/demandes-rejetees-secretaire1">
+                <i class="fas fa-ban"></i> Démandes rejetées
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-white" href="profilSecretaire.html">
+                <i class="fas fa-user-circle"></i> Mon profil
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-white" href="{{ route('logout') }}">
+                <i class="fas fa-sign-out-alt"></i> Déconnexion
+              </a>
+            </li>
+          </ul>
+        </div>
+        </nav>
       <!-- Contenu principal -->
       <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 py-4">
         <div class="row justify-content-center">
           <div class="col-md-12">
 
             <!-- Timeline horizontale de suivi -->
-            <div class="timeline-horizontal mb-5">
+            <div class="timeline-horizontal mb-5 ">
               <div class="step done">
                 <div class="icon"><i class="fas fa-user-edit"></i></div>
                 <div class="label">Secrétaire</div>
@@ -118,16 +119,32 @@
               <div class="card-body">
                 <div class="row mb-4">
                   <div class="col-md-6">
-                    <p><strong>Type de demande :</strong> Attestation de réussite</p>
-                    <p><strong>Date de la demande :</strong> 02 juin 2025</p>
+                    <p><strong>Étudiant :</strong> {{ $demande->etudiant->prenom }} {{ $demande->etudiant->nom }}</p>
+                    <p><strong>Date de Naissance :</strong>{{ $demande->etudiant->date_naissance }}</p>
+                    <p><strong>Matricule :</strong> {{ $demande->etudiant->matricule }}</p>
+                    <p><strong>Email :</strong> {{ $demande->etudiant->email }}</p>
+                    <p><strong>Niveau :</strong> {{ $demande->etudiant->niveau }}</p>
                   </div>
                   <div class="col-md-6">
-                    <p><strong>Statut actuel :</strong> <span class="badge bg-warning">En cours</span></p>
-                    <p><strong>Observation :</strong> Traitement en attente de validation</p>
+                    <p><strong>Type de demande :</strong>{{ $demande->demandeType->nom }}</p>
+                    <p><strong>Date de la demande :</strong>{{ $demande->created_at->format('d/m/Y') }}</p>
+                    <p><strong>Statut actuel :</strong>
+                        @if(str_contains($demande->statut, 'Validée'))
+                          <span class="badge bg-success">Validée</span>
+                        @elseif(str_contains($demande->statut, 'En Cours'))
+                          <span class="badge bg-warning text-dark">En Cours</span>
+                        @elseif(str_contains($demande->statut, 'Annulé'))
+                          <span class="badge bg-danger">Rejetée</span>
+                        @else
+                          <span class="badge bg-info text-dark">{{ $demande->statut }}</span>
+                        @endif
+                      </p>
+                      <p><strong>Commentaire :</strong> {{ $demande->commentaire }}</p>
                   </div>
+                  
                 </div>
-                <div class="text-end">
-                  <a href="listeDemandeEnCours.html" class="btn btn-outline-primary">
+                <div class="text-end mt-4">
+                  <a href="{{ url()->previous() }}" class="btn btn-outline-primary">
                     <i class="fas fa-arrow-left me-1"></i>Retour à la liste des demandes
                   </a>
                 </div>
