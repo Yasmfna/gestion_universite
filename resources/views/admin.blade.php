@@ -89,7 +89,37 @@
             <div class="card-body">
               <h5 class="card-title mb-2">Utilisateurs par rôle</h5>
               @foreach($totalParRôle as $item)
-                <div>{{ ucfirst($item->role) }} : <strong>{{ $item->total }}</strong></div>
+                <div>
+                  @switch($item->role)
+                    @case('secre1')
+                      @php $role = 'Secrétaire 1'; @endphp
+                      @break
+
+                    @case('secre2')
+                      @php $role = 'Secrétaire 2'; @endphp
+                      @break
+
+                    @case('dirc1')
+                      @php $role = 'Directeur Miage'; @endphp
+                      @break
+
+                    @case('dirc2')
+                      @php $role = 'Directeur UFR'; @endphp
+                      @break
+
+                    @case('respo1')
+                      @php $role = 'Responsable de Niveau'; @endphp
+                      @break
+
+                    @case('user')
+                      @php $role = 'Etudiant'; @endphp
+                      @break
+
+                    @default
+                      @php $role = ucfirst($item->role); @endphp
+                  @endswitch
+                  {{ $role }} : <strong>{{ $item->total }}</strong>
+                </div>
               @endforeach
             </div>
           </div>

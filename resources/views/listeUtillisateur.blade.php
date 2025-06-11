@@ -31,7 +31,21 @@
                       <td>{{ $loop->iteration }}</td>
                       <td>{{ $user->name }}</td>
                       <td>{{ $user->email }}</td>
-                      <td>{{ ucfirst($user->role) }}</td>
+                      <td>
+                        @if($user->role == 'user')
+                          Etudiant
+                        @elseif($user->role == 'dirc1')
+                          Directeur Miage
+                        @elseif($user->role == 'dirc2')
+                          Directeur Ufr
+                        @elseif($user->role == 'secre1')
+                          Secretaire 1
+                        @elseif($user->role == 'secre2')
+                          Secretaire finance
+                        @else
+                          {{ ucfirst($user->role) }}
+                        @endif
+                      </td>
                       <td class="d-flex gap-2">
                         <a href="{{ route('utilisateurs.edit', $user->id) }}" class="btn btn-sm btn-warning">
                           <i class="fas fa-edit"></i>

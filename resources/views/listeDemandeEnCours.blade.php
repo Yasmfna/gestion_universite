@@ -27,38 +27,19 @@
 
         @foreach($demandes as $demande)
       <tr>
-      <td> {{ $demande->demandeType->nom }}</td>
-      <td> {{ \Carbon\Carbon::parse($demande->created_at)->format('d/m/Y') }}
-      </td>
-      <td>
-        <a href="{{ route('Suividemandes.show',  $demande->id) }}" class="btn btn-sm btn-outline-primary">
-        <i class="fas fa-eye"></i>
-        </a>
-      </td>
-      <td><span class="badge bg-success">{{ ucfirst($demande->statut ?? 'en attente') }}</span></td>
+        <td> {{ $demande->demandeType->nom }}</td>
+        <td> {{ \Carbon\Carbon::parse($demande->created_at)->format('d/m/Y') }}
+        </td>
+        <td>
+          <a href="{{ route('Suividemandes.show',  $demande->id) }}" class="btn btn-sm btn-outline-primary">
+          <i class="fas fa-eye"></i>
+          </a>
+        </td>
+        <td><span class="badge bg-success">{{ ucfirst($demande->statut ?? 'en attente') }}</span></td>
       </tr>
 
       @endforeach
-        <tr>
-        <td>Relevé de notes provisoire</td>
-        <td>28 mai 2025</td>
-        <td>
-          <a href="voirDetailsEtudiant.html" class="btn btn-sm btn-outline-primary">
-          <i class="fas fa-eye"></i>
-          </a>
-        </td>
-        <td><span class="badge bg-success">Validée</span></td>
-        </tr>
-    
-        <td>Lettre de recommandation</td>
-        <td>10 mai 2025</td>
-        <td>
-          <a href="voirDetailsEtudiant.html" class="btn btn-sm btn-outline-primary">
-          <i class="fas fa-eye"></i>
-          </a>
-        </td>
-        <td><span class="badge bg-danger">Rejetée</span></td>
-
+        
       </tbody>
       </table>
     </div>

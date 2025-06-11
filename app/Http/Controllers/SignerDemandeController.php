@@ -96,7 +96,7 @@ class SignerDemandeController extends Controller
             'demande'  => $demande,
             'etudiant' => $demande->etudiant,
         ]);
+        return $pdf->download('demande_' . strtolower(str_replace(' ', '_', $demande->demandeType->nom)) . '_' . strtolower(str_replace(' ', '_', $demande->etudiant->nom)) . '_' . strtolower(str_replace(' ', '_', $demande->etudiant->prenom)) . '.pdf');
+}
 
-        return $pdf->download("demande_{$demande->id}.pdf");
-    }
 }

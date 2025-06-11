@@ -26,15 +26,15 @@
       <tbody>
         @foreach($demandes as $demande)
       <tr>
-      <td> {{ $demande->demandeType->nom }}</td>
-      <td>           {{ \Carbon\Carbon::parse($demande->created_at)->format('d/m/Y') }}
-      </td>
-      <td>
-        <a href="voirDetailsEtudiant.html" class="btn btn-sm btn-outline-primary">
-        <i class="fas fa-eye"></i>
-        </a>
-      </td>
-      <td><span class="badge bg-success">{{ ucfirst($demande->statut ?? 'en attente') }}</span></td>
+        <td> {{ $demande->demandeType->nom }}</td>
+        <td>           {{ \Carbon\Carbon::parse($demande->created_at)->format('d/m/Y') }}
+        </td>
+        <td>
+          <a href="voirDetailsEtudiant.html" class="btn btn-sm btn-outline-primary">
+          <i class="fas fa-eye"></i>
+          </a>
+        </td>
+        <td><span class="badge bg-success">{{ ucfirst($demande->statut ?? 'en attente') }}</span></td>
       </tr>
 
       @endforeach

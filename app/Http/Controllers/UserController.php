@@ -59,9 +59,9 @@ class UserController extends Controller
                 'date_inscription'  => now(),
             ]);
         }
-
+        
         // Envoi de mail
-        Mail::to($user->email)->send(new \App\Mail\BienvenueUtilisateur($user, $request->password));
+        //Mail::to($user->email)->send(new \App\Mail\BienvenueUtilisateur($user, $request->password));
 
         return redirect()->route('listeUtillisateur')->with('status', 'Utilisateur ajouté avec succès.');
     }

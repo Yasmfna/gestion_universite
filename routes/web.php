@@ -10,6 +10,7 @@ use App\Http\Controllers\DirecteurMiageController;
 use App\Http\Controllers\SecretaireFinancierController;
 use App\Http\Controllers\SecretairePedagogiqueController;
 use App\Http\Controllers\SignerDemandeController;
+use App\Http\Controllers\ResponsableController;
 use Laravel\SerializableClosure\Contracts\Signer;
 use App\Http\Controllers\DirecteurUFRController;
 use PhpParser\Node\Scalar\MagicConst\Dir;
@@ -75,12 +76,18 @@ Route::middleware('auth')->group(function () {
     Route::get('/directeurUfr/dashboard', [DirecteurUFRController::class, 'dashboard'])->name('dirc2.dashboard');
     Route::get('/listeDemandeUFR', [DirecteurUFRController::class, 'indexDemande'])->name('listeDemande');
 
+
+    // Responsable de niveau
+    Route::get('/responsableUfr/dashboard', [ResponsableController::class, 'dashboard'])->name('respo1.dashboard');
+    Route::get('/responsableUfr/listeDemandeUFR', [ResponsableController::class, 'indexDemande'])->name('listeDemandeRespo');
+
+
     // Liste des demandes
     Route::get('/admin/demandes', [DemandeController::class, 'index'])->name('listedemandeAdmin');
     Route::get('/admin/demande/{id}', [DemandeController::class, 'show'])->name('demandes.show');
     Route::get('/user/listdemandes', [DemandeController::class, 'showdemand'])->name('listedemandeUser');
 
-    Route::get('/user/demande', [DemandeController::class, 'show'])->name('demandes.show');
+    //Route::get('/user/demande', [DemandeController::class, 'show'])->name('demandes.show');
     Route::get('/user/demandes', [DemandeController::class, 'showdemandPasser'])->name('passerDemande');
     Route::get('/user/demande/{id}', [DemandeController::class, 'showsuivi'])->name('Suividemandes.show');
     Route::get('/user/profil', [DemandeController::class, 'showProfil'])->name('profil.show');

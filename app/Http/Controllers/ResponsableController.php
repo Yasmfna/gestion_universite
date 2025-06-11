@@ -7,46 +7,46 @@ use Illuminate\Http\Request;
 
 class ResponsableController extends Controller
 {
-    /**
-     * Affiche les demandes (POUR CONSULTATION UNIQUEMENT)
-     * - Le responsable ne peut QUE VOIR les demandes
-     * - AUCUNE ACTION DE VALIDATION OU TRANSMISSION
-     * - On affiche plusieurs statuts pour information
-     */
-    public function index()
+    public function indexDemande(Request $request)
     {
-        // Récupère les demandes dans différents états pour consultation
-        $demandes = Demande::whereIn('statut', [
-            'transmis_saf', 
-            'transmis_directeur_miage',
-            'transmis_directeur_ufr',
-            'approuve'
-        ])->latest()->get();  // Tri par date récente
-        
-        // Affiche la vue avec les demandes (en lecture seule)
-        return view('responsable.index', compact('demandes'));
+        $search = $request->input('search');
+
+        $demandes = Demande::with(['etudiant', 'demandeType'])
+            ->when($search, function ($query, $search) {
+                $query->where(function ($query) use ($search) {
+                    $query->whereHas('etudiant', function ($q) use ($search) {
+                            $q->where('nom', 'like', "%$search%")
+                            ->orWhere('prenom', 'like', "%$search%");
+                        })
+                        ->orWhereHas('demandeType', function ($q) use ($search) {
+                            $q->where('nom', 'like', "%$search%");
+                        })
+                        ->orWhere('date_emission', 'like', "%$search%")
+                        ->orWhere('statut', 'like', "%$search%");
+                });
+            })
+            ->latest()
+            ->get();
+
+        return view('listeDemandeNiveau', compact('demandes', 'search'));
     }
 
-    /**
-     * Affiche les détails d'une demande spécifique
-     * - UNIQUEMENT POUR CONSULTATION
-     * - PAS DE BOUTON D'ACTION
-     */
-    public function show(Demande $demande)
-    {
-        // Vérifie que la demande est dans un statut consultable
-        if (!in_array($demande->statut, [
-            'transmis_saf', 
-            'transmis_directeur_miage',
-            'transmis_directeur_ufr',
-            'approuve'
-        ])) {
-            abort(403, 'Accès non autorisé à cette demande');
-        }
 
-        // Affiche le détail d'une demande (lecture seule)
-        return view('responsable.show', compact('demande'));
+
+
+    public function dashboard()
+    {
+        $stats = [
+            'total' => Demande::count(),
+            'signees' => Demande::where('statut', 'Signée')->count(),
+            'en_cours' => Demande::where('statut', 'En Cours')->count(),
+            'validees' => Demande::where('statut', 'Validée')->count(),
+            'payees' => Demande::where('statut', 'Payée')->count(),
+            'rejetees_finance' => Demande::where('statut', 'Rejeté Finance')->count(),
+        ];
+
+        return view('responsableNiveau', compact('stats'));
     }
     
-    // PAS DE MÉTHODE DE VALIDATION - LE RESPONSABLE NE TRANSMET RIEN
+    
 }

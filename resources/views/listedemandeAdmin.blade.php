@@ -13,10 +13,12 @@
               <table class="table table-hover align-middle" id="demandesTable">
                   <thead class="table-light">
                     <tr>
+                      <th>Étudiant</th>
                       <th>Type de demande</th>
                       <th>Date de soumission</th>
                       <th>Détail</th>
                       <th>Statut</th>
+                      <th>Actions</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -30,18 +32,33 @@
                             <i class="fas fa-eye"></i>
                           </a>
                         </td>
+                        
                         <td>
-                          @php
-                            $badge = match ($demande->statut) {
-                                'Validée' => 'success',
-                                'En cours' => 'warning',
-                                'Rejetée' => 'danger',
-                                default => 'secondary',
-                            };
-                          @endphp
-                          <span class="badge bg-{{ $badge }}">{{ $demande->statut ?? 'Inconnu' }}</span>
-                        </td>
+                            @php
+                                                $couleurs = [
+                                                    'Validée' => 'success',
+                                                    'En cours' => 'warning',
+                                                    'Signée' => 'success',
+                                                    'Payée' => 'info',
+                                                    'Rejeté Finance' => 'danger',
+                                                    'Rejetée' => 'danger',
+                                                    'Annulé' => 'danger',
+                                                ];
+                                                $couleur = $couleurs[$demande->statut] ?? 'secondary';
+                                            @endphp
+                                            <span class="badge bg-{{ $couleur }}">{{ $demande->statut }}</span>
+                                        </td>
+                                        <td>
+                          @if($demande->statut === 'Signée')
+                            
+                              <a href="{{ route('telecharger.pdf', $demande->id) }}" class="btn btn-outline-primary btn-sm">
+                                <i class="fas fa-download"></i> Télécharger PDF
+                              </a>
+                            
+                          @endif
+                           </td>              
                       </tr>
+
                     @empty
                       <tr><td colspan="5" class="text-center">Aucune demande trouvée.</td></tr>
                     @endforelse

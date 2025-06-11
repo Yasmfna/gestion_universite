@@ -94,7 +94,7 @@ class DemandeController extends Controller
                     ->where('demande_type_id', $types->id)
                     ->orderBy('ordre') // facultatif si tu veux l'ordre d'approbation
                     ->get();
-                    $suivis = ApprobationSuivi::with('approbationDemandeType.approbation.roleUser.role')
+                $suivis = ApprobationSuivi::with('approbationDemandeType.approbation.roleUser.role')
                     ->where('demande_id', $types->id)
                     ->get();
         
@@ -163,7 +163,7 @@ class DemandeController extends Controller
 
     public function store(Request $request)
     {
-        $etudiant = Etudiant::where('user_id',Auth::id() )->first();
+        $etudiant = Etudiant::where('user_id',Auth::id())->first();
   
 
         if (!$etudiant) {
@@ -179,15 +179,15 @@ class DemandeController extends Controller
 
         foreach ($approbations as $approbation) {
 
-        $app =        ApprobationSuivi::create([
-            'demande_id' => $demande->id,
-            'approbation_demande_id' => $approbation->id,
-            'user_id' => Auth::id(),
-            'statut' => 'en_attente',
-            'commentaire' => null,
-            'date_approbation' => null,
-        ]);
-    }
+            $app =ApprobationSuivi::create([
+                'demande_id' => $demande->id,
+                'approbation_demande_id' => $approbation->id,
+                'user_id' => Auth::id(),
+                'statut' => 'en_attente',
+                'commentaire' => null,
+                'date_approbation' => null,
+            ]);
+        }
 
 
         return redirect()->back()->with('success', 'Votre demande a été enregistrée.');
