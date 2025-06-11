@@ -95,7 +95,7 @@ class DemandeController extends Controller
                     ->orderBy('ordre') // facultatif si tu veux l'ordre d'approbation
                     ->get();
                 $suivis = ApprobationSuivi::with('approbationDemandeType.approbation.roleUser.role')
-                    ->where('demande_id', $types->id)
+                    ->where('demande_id', $demande->id)
                     ->get();
         
         return view('voirDetailsEtudiant', compact('types','documents', 'approbations','suivis'));
